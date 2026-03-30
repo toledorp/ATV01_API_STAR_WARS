@@ -1,0 +1,57 @@
+import express from "express";
+
+//importando o mongoose
+import mongoose from "mongoose";
+
+//importando o model
+import Person from "./models/Persons.js";
+import Planet from "./models/Planets.js";
+import Vehicle from "./models/Vehicles.js";
+import Film from "./models/Films.js";
+import Specie from "./models/Species.js";
+
+//importando o model de usuario
+import User from "./models/Users.js";
+
+//importando as rotas(Routes)
+import personRoutes from "./routes/personRoutes.js";
+import planetRoutes from "./routes/planetRoutes.js";
+import vehicleRoutes from "./routes/vehicleRoutes.js";
+import filmRoutes from "./routes/filmRoutes.js";
+import specieRoutes from "./routes/specieRoutes.js";
+
+//Importando o cors
+import cors from "cors";
+
+//Importando as ROtas de Usuarios
+import userRoutes from "./routes/userRoutes.js";
+
+const app = express();
+
+// Configurações do express
+app.use(express.json()); // permite o uso de json na aplicão
+
+//Configurando o CORS
+app.use(cors());
+
+//Ativando a utilização das rotas
+app.use("/", personRoutes);
+app.use("/", userRoutes);
+app.use("/", planetRoutes);
+app.use("/", vehicleRoutes);
+app.use("/", filmRoutes);
+app.use("/", specieRoutes);
+
+//iniciando a conexão com o banco mongodb
+mongoose.connect("mongodb://127.0.0.1:27017/starwars");
+
+// Rodando a api na port 4000
+const port = 4000;
+
+app.listen(port, (error) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(`API rodando em http://localhost:${port}`);
+  }
+});
