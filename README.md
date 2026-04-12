@@ -218,10 +218,11 @@ https://figma.com/seu-projeto
 ## 📸 Demonstração
 
 ### Tela inicial
-![Tela inicial](assets/home.png)
+![Home Screenshot](assets/screenshot-home.png)
 
 ### Dashboard
-![Dashboard](assets/dashboard.png)
+![Dashboard Screenshot](assets/screenshot-dashboard.png)
+
 
 ### Teste da API
 ![Teste da API](assets/api.png)
