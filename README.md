@@ -4,6 +4,13 @@ API REST desenvolvida com Node.js, Express e MongoDB Atlas para gerenciamento de
 
 ---
 
+## Application Preview
+
+![Home Screenshot](assets/screenshot-home.png)
+![Dashboard Screenshot](assets/screenshot-dashboard.png)
+
+---
+
 ## 📌 Objetivo
 
 Este projeto foi desenvolvido como parte da disciplina **Desenvolvimento Web III**, com o objetivo de criar uma API REST completa com integração ao MongoDB e consumo via frontend.
