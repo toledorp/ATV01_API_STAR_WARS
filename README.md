@@ -63,9 +63,7 @@ ATV01_API_STAR_WARS/
 ### 1. Clonar o repositório
 
 ```
-git clone https://github.com/seu-usuario/star-wars-fullstack.git
-```
-
+git clone https://github.com/toledorp/ATV01_API_STAR_WARS
 ---
 
 ### 2. Instalar dependências
@@ -142,17 +140,53 @@ npm run dev
 
 ---
 
+### 🧬 Species
+
+* GET `/species` → lista todos
+* GET `/species/:id` → busca por id
+* POST `/species` → cria planeta
+* PUT `/species/:id` → atualiza
+* DELETE `/species/:id` → remove
+
+---
+
+### 🛸 Vehicles 
+
+* GET `/vehicles` → lista todos
+* GET `/vehicles/:id` → busca por id
+* POST `/vehicles` → cria planeta
+* PUT `/vehicles/:id` → atualiza
+* DELETE `/vehicles/:id` → remove
+
+---
+
+### 🚀 Starships
+
+* GET `/starships` → lista todos
+* GET `/starships/:id` → busca por id
+* POST `/starships` → cria planeta
+* PUT `/starships/:id` → atualiza
+* DELETE `/starships/:id` → remove
+
+
 ## 🧩 Exemplo de estrutura de dados (com aninhamento)
 
 ```
 {
-  "name": "Luke Skywalker",
-  "birth_year": "19BBY",
-  "homeworld": {
-    "name": "Tatooine",
-    "climate": "arid"
+  "name": "C-3PO",
+  "birth_year": "112BBY",
+  "homeworld": "Tatooine",
+  "species": "Droid",
+  "descriptions": {
+    "height": 167,
+    "mass": 75,
+    "hair_color": "n/a",
+    "skin_color": "gold",
+    "eye_color": "yellow",
+    "gender": "n/a"
   }
 }
+
 ```
 
 ✔️ Atende ao requisito de documento aninhado solicitado no trabalho.
@@ -183,7 +217,11 @@ https://figma.com/seu-projeto
 
 ## 📸 Demonstração
 
-Adicionar aqui prints ou GIF da aplicação funcionando.
+![Tela inicial](assets/home.png)
+
+![Dashboard](assets/dashboard.png)
+
+![API funcionando](assets/api.png)
 
 ---
 
@@ -210,8 +248,9 @@ http://localhost:4000/api-docs
 
 ## 👨‍💻 Autor(es)
 
-* Seu Nome
-* Integrantes do grupo
+* Camila Machado de Souza
+* Ricardo Sugano
+* Rogerio Pupo Toledo
 
 ---
 
