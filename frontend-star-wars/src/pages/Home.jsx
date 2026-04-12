@@ -1,12 +1,12 @@
 import { useState } from "react";
 import Hero from "../components/Hero";
-import Features from "../components/Features";
+import Features from "./Features";
 import AuthPanel from "../components/AuthPanel";
 
 function Home() {
   const [showAuth, setShowAuth] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem("token")
+    !!localStorage.getItem("token"),
   );
 
   const handleStart = () => {

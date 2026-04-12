@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 import Home from "./pages/Home";
+import Features from "./pages/Features";
 import Characters from "./pages/Characters";
 import Films from "./pages/Films";
 import Planets from "./pages/Planets";
@@ -18,6 +19,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/features" element={<Features />} />
         <Route path="/characters" element={<Characters />} />
         <Route path="/films" element={<Films />} />
         <Route path="/planets" element={<Planets />} />
