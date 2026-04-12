@@ -223,18 +223,6 @@ https://figma.com/seu-projeto
 
 ---
 
-## 📸 Demonstração
-
-### Tela inicial
-![Home Screenshot](assets/screenshot-home.png)
-
-### Dashboard
-![Dashboard Screenshot](assets/screenshot-dashboard.png)
-
-
-### Teste da API
-![Teste da API](assets/api.png)
-
 ## 🧠 Desafios enfrentados
 
 * Configuração do MongoDB Atlas
