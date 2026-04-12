@@ -75,3 +75,12 @@ export async function getStarships() {
   });
 }
 
+export async function getVehicles() {
+  const token = localStorage.getItem("token");
+
+  return fetchData("/vehicles", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
