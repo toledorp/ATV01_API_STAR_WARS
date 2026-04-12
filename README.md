@@ -8,15 +8,15 @@ API REST desenvolvida com **Node.js, Express e MongoDB Atlas** para gerenciament
 
 ### 🏠 Home
 
-![Home Screenshot](assets/home.png)
+![Home Screenshot](assets/screenshot-home.png)
 
 ### 📊 Dashboard
 
-![Dashboard Screenshot](assets/dashboard.png)
+![Dashboard Screenshot](assets/screenshot-dashboard.png)
 
 ### 🔌 API (Insomnia)
 
-![API Screenshot](assets/api.png)
+![API Screenshot](assets/screenshot-api.png)
 
 ---
 
