@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getCharacters } from "../services/api";
+import { getCharacters, fetchData } from "../services/api";
 import "./Characters.css";
 
 function Characters() {
@@ -7,27 +7,129 @@ function Characters() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
+  const [newCharacter, setNewCharacter] = useState({
+    name: "",
+    birth_year: "",
+    homeworld: "",
+    species: "",
+    descriptions: {
+      height: "",
+      mass: "",
+      gender: "",
+      eye_color: "",
+    },
+  });
 
   const charactersPerPage = 9;
 
   useEffect(() => {
-    const loadCharacters = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const data = await getCharacters();
-        const personsList = Array.isArray(data) ? data : data.persons || [];
-        setCharacters(personsList);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    const role = localStorage.getItem("role");
+    setIsAdmin(role === "admin");
     loadCharacters();
   }, []);
+
+  const loadCharacters = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const data = await getCharacters();
+      const list = Array.isArray(data) ? data : data.persons || [];
+      setCharacters(list);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setNewCharacter({
+      name: "",
+      birth_year: "",
+      homeworld: "",
+      species: "",
+      descriptions: {
+        height: "",
+        mass: "",
+        gender: "",
+        eye_color: "",
+      },
+    });
+    setEditingId(null);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Deseja excluir este personagem?");
+    if (!confirmed) return;
+
+    try {
+      await fetchData(`/persons/${id}`, {
+        method: "DELETE",
+      });
+
+      await loadCharacters();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleEdit = (character) => {
+    setEditingId(character._id);
+    setNewCharacter({
+      name: character.name || "",
+      birth_year: character.birth_year || "",
+      homeworld: character.homeworld?._id || "",
+      species: character.species?._id || "",
+      descriptions: {
+        height: character.descriptions?.height || "",
+        mass: character.descriptions?.mass || "",
+        gender: character.descriptions?.gender || "",
+        eye_color: character.descriptions?.eye_color || "",
+      },
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const payload = {
+        ...newCharacter,
+        descriptions: {
+          ...newCharacter.descriptions,
+          height: Number(newCharacter.descriptions.height),
+          mass: Number(newCharacter.descriptions.mass),
+        },
+      };
+
+      if (editingId) {
+        await fetchData(`/persons/${editingId}`, {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        });
+
+        alert("Personagem atualizado com sucesso.");
+      } else {
+        await fetchData("/persons", {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+
+        alert("Personagem criado com sucesso.");
+      }
+
+      resetForm();
+      await loadCharacters();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   const totalPages = Math.ceil(characters.length / charactersPerPage);
 
@@ -53,12 +155,146 @@ function Characters() {
   };
 
   return (
-    <section className="characters" id="characters">
+    <section className="characters">
       <div className="characters-container">
-        <h2 className="characters-title">Characters</h2>
+        <h1 className="characters-title">Characters</h1>
         <p className="characters-subtitle">
           Explore iconic beings from the Star Wars universe.
         </p>
+
+        {isAdmin && (
+          <div className="admin-form-wrapper">
+            <h2 className="admin-form-title">
+              {editingId ? "Editar Personagem" : "Adicionar Personagem"}
+            </h2>
+
+            <form className="admin-film-form" onSubmit={handleSubmit}>
+              <div className="admin-form-grid">
+                <input
+                  type="text"
+                  placeholder="Nome"
+                  value={newCharacter.name}
+                  onChange={(e) =>
+                    setNewCharacter({ ...newCharacter, name: e.target.value })
+                  }
+                  required
+                />
+
+                <input
+                  type="text"
+                  placeholder="Ano de nascimento"
+                  value={newCharacter.birth_year}
+                  onChange={(e) =>
+                    setNewCharacter({
+                      ...newCharacter,
+                      birth_year: e.target.value,
+                    })
+                  }
+                />
+
+                <input
+                  type="text"
+                  placeholder="ID do planeta"
+                  value={newCharacter.homeworld}
+                  onChange={(e) =>
+                    setNewCharacter({
+                      ...newCharacter,
+                      homeworld: e.target.value,
+                    })
+                  }
+                />
+
+                <input
+                  type="text"
+                  placeholder="ID da espécie"
+                  value={newCharacter.species}
+                  onChange={(e) =>
+                    setNewCharacter({
+                      ...newCharacter,
+                      species: e.target.value,
+                    })
+                  }
+                />
+
+                <input
+                  type="number"
+                  placeholder="Altura"
+                  value={newCharacter.descriptions.height}
+                  onChange={(e) =>
+                    setNewCharacter({
+                      ...newCharacter,
+                      descriptions: {
+                        ...newCharacter.descriptions,
+                        height: e.target.value,
+                      },
+                    })
+                  }
+                />
+
+                <input
+                  type="number"
+                  placeholder="Peso"
+                  value={newCharacter.descriptions.mass}
+                  onChange={(e) =>
+                    setNewCharacter({
+                      ...newCharacter,
+                      descriptions: {
+                        ...newCharacter.descriptions,
+                        mass: e.target.value,
+                      },
+                    })
+                  }
+                />
+
+                <input
+                  type="text"
+                  placeholder="Gênero"
+                  value={newCharacter.descriptions.gender}
+                  onChange={(e) =>
+                    setNewCharacter({
+                      ...newCharacter,
+                      descriptions: {
+                        ...newCharacter.descriptions,
+                        gender: e.target.value,
+                      },
+                    })
+                  }
+                />
+
+                <input
+                  type="text"
+                  placeholder="Cor dos olhos"
+                  value={newCharacter.descriptions.eye_color}
+                  onChange={(e) =>
+                    setNewCharacter({
+                      ...newCharacter,
+                      descriptions: {
+                        ...newCharacter.descriptions,
+                        eye_color: e.target.value,
+                      },
+                    })
+                  }
+                />
+              </div>
+
+              <div className="admin-actions">
+                <button type="submit" className="admin-submit-btn">
+                  {editingId ? "Salvar" : "Criar"}
+                </button>
+
+                {editingId && (
+                  <button
+                    type="button"
+                    className="admin-cancel-btn"
+                    onClick={resetForm}
+                  >
+                    Cancelar
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+        )}
 
         {loading && <p className="characters-message">Loading characters...</p>}
 
@@ -111,6 +347,24 @@ function Characters() {
                     <strong>Eye Color:</strong>{" "}
                     {character.descriptions?.eye_color ?? "N/A"}
                   </p>
+
+                  {isAdmin && (
+                    <div className="film-admin-actions">
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEdit(character)}
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDelete(character._id)}
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
@@ -125,20 +379,19 @@ function Characters() {
               </button>
 
               <div className="pagination-numbers">
-                {Array.from(
-                  { length: totalPages },
-                  (_, index) => index + 1,
-                ).map((pageNumber) => (
-                  <button
-                    key={pageNumber}
-                    className={`pagination-number ${
-                      currentPage === pageNumber ? "active" : ""
-                    }`}
-                    onClick={() => goToPage(pageNumber)}
-                  >
-                    {pageNumber}
-                  </button>
-                ))}
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                  (pageNumber) => (
+                    <button
+                      key={pageNumber}
+                      className={`pagination-number ${
+                        currentPage === pageNumber ? "active" : ""
+                      }`}
+                      onClick={() => goToPage(pageNumber)}
+                    >
+                      {pageNumber}
+                    </button>
+                  )
+                )}
               </div>
 
               <button

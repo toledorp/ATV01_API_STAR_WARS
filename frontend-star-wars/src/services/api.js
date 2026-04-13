@@ -1,10 +1,13 @@
 const API_BASE_URL = "http://localhost:4000";
 
 export async function fetchData(endpoint, options = {}) {
+  const token = localStorage.getItem("token");
+
   const response = await fetch(`${API_BASE_URL}${endpoint}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
+      ...(token && { Authorization: `Bearer ${token}` }),
       ...(options.headers || {}),
     },
   });
@@ -26,62 +29,25 @@ export async function loginUser(email, password) {
 }
 
 export async function getCharacters() {
-  const token = localStorage.getItem("token");
-
-  return fetchData("/persons", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return fetchData("/persons");
 }
 
 export async function getPlanets() {
-  const token = localStorage.getItem("token");
-
-  return fetchData("/planets", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return fetchData("/planets");
 }
 
 export async function getSpecies() {
-  const token = localStorage.getItem("token");
-
-  return fetchData("/species", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return fetchData("/species");
 }
 
 export async function getFilms() {
-  const token = localStorage.getItem("token");
-
-  return fetchData("/films", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return fetchData("/films");
 }
 
 export async function getVehicles() {
-  const token = localStorage.getItem("token");
-
-  return fetchData("/vehicles", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return fetchData("/vehicles");
 }
 
 export async function getStarships() {
-  const token = localStorage.getItem("token");
-
-  return fetchData("/starships", {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+  return fetchData("/starships");
 }
-

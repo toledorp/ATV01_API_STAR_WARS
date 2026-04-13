@@ -1,41 +1,26 @@
+cat > README.md << 'EOF'
 # 🚀 Star Wars API - Fullstack
 
-API REST desenvolvida com **Node.js, Express e MongoDB Atlas** para gerenciamento de dados do universo Star Wars, com **frontend em React** para consumo dos dados.
-
----
-
-## 📸 Application Preview
-
-### 🏠 Home
-
-![Home Screenshot](assets/screenshot-home.png)
-
-### 📊 Dashboard
-
-![Dashboard Screenshot](assets/screenshot-dashboard.png)
-
-### 🔌 API (Insomnia)
-
-![API Screenshot](assets/screenshot-api.png)
+Sistema fullstack desenvolvido com **Node.js, Express, MongoDB Atlas e React**, permitindo gerenciamento completo (CRUD) dos dados do universo Star Wars com **interface administrativa integrada**.
 
 ---
 
 ## 📌 Objetivo
 
-Este projeto foi desenvolvido como parte da disciplina **Desenvolvimento Web III**, com o objetivo de criar uma API REST completa com integração ao MongoDB e consumo via frontend.
+Projeto desenvolvido para a disciplina **Desenvolvimento Web III**, com foco na construção de uma aplicação fullstack completa.
 
-- backend com API REST
-- integração com MongoDB Atlas
-- frontend para consumo da API
-- autenticação com JWT
-- documentação interativa com Swagger
+✔ API REST estruturada  
+✔ Integração com MongoDB Atlas  
+✔ Frontend em React consumindo API  
+✔ Autenticação com JWT  
+✔ Painel administrativo com CRUD completo via interface  
+✔ Documentação interativa com Swagger  
 
 ---
 
 ## 🛠️ Tecnologias utilizadas
 
 ### 🔧 Backend
-
 - Node.js
 - Express
 - MongoDB Atlas
@@ -45,313 +30,210 @@ Este projeto foi desenvolvido como parte da disciplina **Desenvolvimento Web III
 - Swagger UI Express
 
 ### 🎨 Frontend
-
 - React
 - Vite
-- Axios
+- Fetch API
 
 ### 🧪 Ferramentas
-
 - Insomnia
 - Swagger
 - Git e GitHub
-- MongoDB Atlas
 
 ---
 
 ## 📂 Estrutura do projeto
 
-```text
 ATV01_API_STAR_WARS/
-│
 ├── backend-star-wars/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── services/
-│   ├── swagger.js
-│   ├── index.js
-│   └── package.json
-│
 ├── frontend-star-wars/
-│   ├── src/
-│   ├── components/
-│   ├── pages/
-│   └── package.json
-│
 ├── assets/
-│   ├── screenshot-home.png
-│   ├── screenshot-dashboard.png
-│   └── screenshot-api.png
-│
-├── package.json
 └── README.md
-```
 
 ---
 
 ## ⚙️ Como executar o projeto
 
-### 1. Clonar o repositório
+### 1. Instalar dependências
 
-```bash
-git clone https://github.com/toledorp/ATV01_API_STAR_WARS.git
-```
-
----
-
-### 2. Instalar dependências
-
-#### Backend
-
-```bash
+Backend:
 cd backend-star-wars
 npm install
-```
 
-#### Frontend
-
-```bash
+Frontend:
 cd ../frontend-star-wars
 npm install
-```
 
 ---
 
-### 3. Configurar variáveis de ambiente
+### 2. Configurar .env
 
-Crie um arquivo `.env` dentro da pasta **backend-star-wars**:
+backend-star-wars/.env
 
-```env
-MONGODB_URI=sua_string_do_mongodb_atlas
-JWT_SECRET=sua_chave_secreta
+MONGODB_URI=sua_string
+JWTSECRET=sua_chave
 PORT=4000
-```
 
 ---
 
-### 4. Executar aplicação
+### 3. Executar
 
-Na raiz do projeto:
-
-```bash
+Backend:
 npm run dev
-```
 
-- Backend: http://localhost:4000
-- Frontend: http://localhost:5173
-
----
-
-## 🔗 Endpoints da API
-
-### 🎬 Filmes
-
-- GET `/films` → lista todos os filmes
-- GET `/films/:id` → busca por id
-- POST `/films` → cria filme
-- PUT `/films/:id` → atualiza filme
-- DELETE `/films/:id` → remove filme
+Frontend:
+npm run dev
 
 ---
 
-### 👤 Personagens
+## 🌐 Acessos
 
-- GET `/persons` → lista todos
-- GET `/persons/:id` → busca por id
-- POST `/persons` → cria personagem
-- PUT `/persons/:id` → atualiza
-- DELETE `/persons/:id` → remove
+Backend: http://localhost:4000  
+Frontend: http://localhost:5173  
+Swagger: http://localhost:4000/api-docs  
 
 ---
 
-### 🌍 Planetas
+## 🔐 Autenticação
 
-- GET `/planets` → lista todos
-- GET `/planets/:id` → busca por id
-- POST `/planets` → cria planeta
-- PUT `/planets/:id` → atualiza
-- DELETE `/planets/:id` → remove
+Sistema com JWT e dois níveis:
 
----
+Usuário:
+- Visualiza dados
 
-### 🧬 Species
-
-- GET `/species` → lista todos
-- GET `/species/:id` → busca por id
-- POST `/species` → cria species
-- PUT `/species/:id` → atualiza
-- DELETE `/species/:id` → remove
+Admin:
+- Cria
+- Edita
+- Exclui
 
 ---
 
-### 🛸 Vehicles
+## 🧩 Funcionalidades
 
-- GET `/vehicles` → lista todos
-- GET `/vehicles/:id` → busca por id
-- POST `/vehicles` → cria vehicle
-- PUT `/vehicles/:id` → atualiza
-- DELETE `/vehicles/:id` → remove
+### Backend
+- CRUD completo
+- API REST
+- MongoDB Atlas
+- JWT
+- Middleware de autorização
+- Swagger
 
----
-
-### 🚀 Starships
-
-- GET `/starships` → lista todos
-- GET `/starships/:id` → busca por id
-- POST `/starships` → cria starship
-- PUT `/starships/:id` → atualiza
-- DELETE `/starships/:id` → remove
-
----
-
-## 🧩 Exemplo de estrutura de dados (com aninhamento)
-
-```json
-{
-  "name": "C-3PO",
-  "birth_year": "112BBY",
-  "homeworld": "Tatooine",
-  "species": "Droid",
-  "descriptions": {
-    "height": 167,
-    "mass": 75,
-    "hair_color": "n/a",
-    "skin_color": "gold",
-    "eye_color": "yellow",
-    "gender": "n/a"
-  }
-}
-```
-
-✔️ Atende ao requisito de documento aninhado solicitado no trabalho.
+### Frontend
+- Login
+- Painel admin
+- CRUD visual
+- Paginação
+- Controle por perfil
 
 ---
 
-## 🧪 Testes da API
+## 📚 Entidades
 
-Os testes foram realizados utilizando o **Insomnia**, validando todos os endpoints de CRUD (Create, Read, Update e Delete).
-
----
-
-## ☁️ Banco de dados
-
-O banco de dados está hospedado na nuvem utilizando o **MongoDB Atlas**.
-
----
-
-## 🎨 Protótipo do Frontend
-
-```text
-https://www.figma.com/proto/2KIfzXKWMaD8ZzBU6ABgr7/api_star-wars?node-id=0-1&t=ULhOFcygZzI4HqTi-1
-```
+- Films
+- Characters
+- Planets
+- Species
+- Vehicles
+- Starships
 
 ---
 
-## 🧠 Desafios enfrentados
+## 🔗 Endpoints
 
-- Configuração do MongoDB Atlas
-- Conexão entre backend e banco de dados
-- Estruturação de rotas REST
-- Implementação do CRUD completo
-- Integração entre frontend e backend
-- Organização do projeto fullstack
+Auth:
+POST /user  
+POST /auth  
+
+Films:
+GET /films  
+POST /films  
+PUT /films/:id  
+DELETE /films/:id  
+
+Characters:
+GET /persons  
+POST /persons  
+PUT /persons/:id  
+DELETE /persons/:id  
+
+Planets:
+GET /planets  
+POST /planets  
+PUT /planets/:id  
+DELETE /planets/:id  
+
+Species:
+GET /species  
+POST /species  
+PUT /species/:id  
+DELETE /species/:id  
+
+Vehicles:
+GET /vehicles  
+POST /vehicles  
+PUT /vehicles/:id  
+DELETE /vehicles/:id  
+
+Starships:
+GET /starships  
+POST /starships  
+PUT /starships/:id  
+DELETE /starships/:id  
 
 ---
 
-## 📘 Documentação da API (Swagger)
+## 🧪 Testes
 
-A API possui documentação interativa utilizando **Swagger**, permitindo visualizar e testar todos os endpoints diretamente pelo navegador.
+- Insomnia  
+- Swagger  
+- Frontend  
 
-### 🔗 Acesso
+---
+
+## ☁️ Banco
+
+MongoDB Atlas
+
+---
+
+## 🧠 Desafios
+
+- MongoDB Atlas
+- JWT
+- Integração front/back
+- CRUD completo
+- Controle de acesso
+- Paginação
+- Swagger
+
+---
+
+## 📘 Swagger
 
 http://localhost:4000/api-docs
 
 ---
 
-## 🔐 Autenticação (JWT)
+## 🎨 Painel Admin
 
-Algumas rotas da API são protegidas e exigem autenticação via **Bearer Token (JWT)**.
+Permite:
 
-### 1. Criar usuário
+- Criar
+- Editar
+- Excluir
+- Paginar dados
 
-POST /user
-
-Exemplo de requisição:
-
-{
-  "name": "Luke Skywalker",
-  "email": "luke@email.com",
-  "password": "123456"
-}
+Tudo via interface gráfica.
 
 ---
 
-### 2. Realizar login
+## 👨‍💻 Autores
 
-POST /auth
-
-Exemplo de requisição:
-
-{
-  "email": "luke@email.com",
-  "password": "123456"
-}
-
-Resposta esperada:
-
-{
-  "message": "Login realizado com sucesso",
-  "token": "SEU_TOKEN_JWT"
-}
-
----
-
-### 3. Autorizar no Swagger
-
-Após obter o token:
-
-1. Clique no botão **Authorize**
-2. Insira:
-
-Bearer SEU_TOKEN_JWT
-
-3. Clique em **Authorize**
-
-Agora você poderá testar todas as rotas protegidas diretamente no Swagger.
-
----
-
-## 📚 O que está documentado
-
-- Cadastro de usuário
-- Autenticação (login)
-- CRUD de filmes
-- CRUD de personagens
-- CRUD de planetas
-- CRUD de espécies
-- CRUD de veículos
-- CRUD de espaçonaves
-
----
-
-## 🧪 Testes da API
-
-A API pode ser testada utilizando:
-
-- Swagger (interface interativa integrada)
-- Insomnia (testes manuais dos endpoints)
----
-
-## 👨‍💻 Autor(es)
-
-- Camila Machado de Souza
-- Ricardo Sugano
-- Rogerio Pupo Toledo
+- Camila Machado de Souza  
+- Ricardo Sugano  
+- Rogerio Pupo Toledo  
 
 ---
 
 ## 📄 Licença
 
-Este projeto é acadêmico e não possui fins comerciais.
+Projeto acadêmico sem fins comerciais.

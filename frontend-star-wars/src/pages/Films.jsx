@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getFilms } from "../services/api";
+import { getFilms, fetchData } from "../services/api";
 import "./Films.css";
 
 function Films() {
@@ -7,28 +7,113 @@ function Films() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
+  const [newFilm, setNewFilm] = useState({
+    title: "",
+    episode_id: "",
+    opening_crawl: "",
+    director: "",
+    producer: "",
+    release_date: "",
+  });
 
   const filmsPerPage = 6;
 
   useEffect(() => {
-    const loadFilms = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const data = await getFilms();
-        const filmsList = Array.isArray(data) ? data : data.films || [];
-
-        setFilms(filmsList);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
+    const role = localStorage.getItem("role");
+    setIsAdmin(role === "admin");
     loadFilms();
   }, []);
+
+  const loadFilms = async () => {
+    try {
+      setLoading(true);
+      setError("");
+
+      const data = await getFilms();
+      const filmsList = Array.isArray(data) ? data : data.films || [];
+      setFilms(filmsList);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const resetForm = () => {
+    setNewFilm({
+      title: "",
+      episode_id: "",
+      opening_crawl: "",
+      director: "",
+      producer: "",
+      release_date: "",
+    });
+    setEditingId(null);
+  };
+
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Deseja excluir este filme?");
+    if (!confirmed) return;
+
+    try {
+      await fetchData(`/films/${id}`, {
+        method: "DELETE",
+      });
+
+      await loadFilms();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleEdit = (film) => {
+    setEditingId(film._id);
+    setNewFilm({
+      title: film.title || "",
+      episode_id: film.episode_id || "",
+      opening_crawl: film.opening_crawl || "",
+      director: film.director || "",
+      producer: film.producer || "",
+      release_date: film.release_date ? film.release_date.slice(0, 10) : "",
+    });
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const payload = {
+        ...newFilm,
+        episode_id: Number(newFilm.episode_id),
+      };
+
+      if (editingId) {
+        await fetchData(`/films/${editingId}`, {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        });
+
+        alert("Filme atualizado com sucesso.");
+      } else {
+        await fetchData("/films", {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+
+        alert("Filme criado com sucesso.");
+      }
+
+      resetForm();
+      await loadFilms();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   const totalPages = Math.ceil(films.length / filmsPerPage);
 
@@ -61,8 +146,94 @@ function Films() {
           Explore the legendary movies of the Star Wars saga.
         </p>
 
-        {loading && <p className="films-message">Loading films...</p>}
+        {isAdmin && (
+          <div className="admin-form-wrapper">
+            <h2 className="admin-form-title">
+              {editingId ? "Editar Filme" : "Adicionar Filme"}
+            </h2>
 
+            <form className="admin-film-form" onSubmit={handleSubmit}>
+              <div className="admin-form-grid">
+                <input
+                  type="text"
+                  placeholder="Título"
+                  value={newFilm.title}
+                  onChange={(e) =>
+                    setNewFilm({ ...newFilm, title: e.target.value })
+                  }
+                  required
+                />
+
+                <input
+                  type="number"
+                  placeholder="Episódio"
+                  value={newFilm.episode_id}
+                  onChange={(e) =>
+                    setNewFilm({ ...newFilm, episode_id: e.target.value })
+                  }
+                  required
+                />
+
+                <input
+                  type="text"
+                  placeholder="Diretor"
+                  value={newFilm.director}
+                  onChange={(e) =>
+                    setNewFilm({ ...newFilm, director: e.target.value })
+                  }
+                  required
+                />
+
+                <input
+                  type="text"
+                  placeholder="Produtor"
+                  value={newFilm.producer}
+                  onChange={(e) =>
+                    setNewFilm({ ...newFilm, producer: e.target.value })
+                  }
+                  required
+                />
+
+                <input
+                  type="date"
+                  value={newFilm.release_date}
+                  onChange={(e) =>
+                    setNewFilm({ ...newFilm, release_date: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <textarea
+                placeholder="Opening Crawl"
+                value={newFilm.opening_crawl}
+                onChange={(e) =>
+                  setNewFilm({ ...newFilm, opening_crawl: e.target.value })
+                }
+                rows="7"
+                required
+              />
+
+              <div className="admin-actions">
+                <button type="submit" className="admin-submit-btn">
+                  {editingId ? "Salvar Alterações" : "Criar Filme"}
+                </button>
+
+                {editingId && (
+                  <button
+                    type="button"
+                    className="admin-cancel-btn"
+                    onClick={resetForm}
+                  >
+                    Cancelar
+                  </button>
+                )}
+              </div>
+            </form>
+          </div>
+        )}
+
+        {loading && <p className="films-message">Loading films...</p>}
         {error && <p className="films-message error">Error: {error}</p>}
 
         {!loading && !error && films.length === 0 && (
@@ -74,7 +245,7 @@ function Films() {
             <div className="films-grid">
               {currentFilms.map((film) => (
                 <div className="film-card" key={film._id}>
-                  <h3>{film.title ?? film.name ?? "Untitled"}</h3>
+                  <h3>{film.title ?? "Untitled"}</h3>
 
                   <p>
                     <strong>Episode:</strong> {film.episode_id ?? "N/A"}
@@ -98,6 +269,24 @@ function Films() {
                       ? `${film.opening_crawl.slice(0, 140)}...`
                       : "N/A"}
                   </p>
+
+                  {isAdmin && (
+                    <div className="film-admin-actions">
+                      <button
+                        className="edit-btn"
+                        onClick={() => handleEdit(film)}
+                      >
+                        Editar
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        onClick={() => handleDelete(film._id)}
+                      >
+                        Excluir
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

@@ -27,6 +27,11 @@ function AuthPanel({ onAuthSuccess }) {
         const data = await loginUser(email, password);
 
         localStorage.setItem("token", data.token);
+
+        // decodificar o token para pegar o role
+        const payload = JSON.parse(atob(data.token.split(".")[1]));
+        localStorage.setItem("role", payload.role);
+        
         setMessage("Login realizado com sucesso.");
 
         setTimeout(() => {
@@ -57,9 +62,7 @@ function AuthPanel({ onAuthSuccess }) {
   return (
     <section className="auth-panel">
       <div className="auth-card">
-        <h2 className="auth-title">
-          {isLoginMode ? "Login" : "Cadastro"}
-        </h2>
+        <h2 className="auth-title">{isLoginMode ? "Login" : "Cadastro"}</h2>
 
         <p className="auth-subtitle">
           {isLoginMode
@@ -95,11 +98,7 @@ function AuthPanel({ onAuthSuccess }) {
           />
 
           <button type="submit" disabled={loading}>
-            {loading
-              ? "Processando..."
-              : isLoginMode
-              ? "Entrar"
-              : "Cadastrar"}
+            {loading ? "Processando..." : isLoginMode ? "Entrar" : "Cadastrar"}
           </button>
         </form>
 
@@ -108,9 +107,7 @@ function AuthPanel({ onAuthSuccess }) {
 
         <div className="auth-toggle">
           <span>
-            {isLoginMode
-              ? "Ainda não tem conta?"
-              : "Já possui uma conta?"}
+            {isLoginMode ? "Ainda não tem conta?" : "Já possui uma conta?"}
           </span>
 
           <button
