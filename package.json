@@ -1,0 +1,13 @@
+{
+  "name": "star-wars-fullstack",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -n BACK,FRONT -c green,blue \"npm run dev:back\" \"npm run dev:front\"",
+    "dev:back": "npm --prefix backend-star-wars run dev",
+    "dev:front": "npm --prefix frontend-star-wars run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
