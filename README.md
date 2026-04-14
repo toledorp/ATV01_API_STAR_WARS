@@ -231,32 +231,6 @@ POST /starships
 PUT /starships/:id  
 DELETE /starships/:id  
 
----
-
-## 🧪 Testes
-
-- Insomnia  
-- Swagger  
-- Frontend  
-
----
-
-## ☁️ Banco
-
-MongoDB Atlas
-
----
-
-## 🧠 Desafios
-
-- MongoDB Atlas
-- JWT
-- Integração front/back
-- CRUD completo
-- Controle de acesso
-- Paginação
-- Swagger
-
 ## 🧩 Exemplo de estrutura de dados (com aninhamento)
 
 ```json
@@ -275,6 +249,26 @@ MongoDB Atlas
   }
 }
 ```
+
+---
+
+## 🧪 Testes
+
+- Insomnia  
+- Swagger  
+- Frontend  
+
+---
+
+## 🧠 Desafios
+
+- MongoDB Atlas
+- JWT
+- Integração front/back
+- CRUD completo
+- Controle de acesso
+- Paginação
+- Swagger
 
 ---
 
