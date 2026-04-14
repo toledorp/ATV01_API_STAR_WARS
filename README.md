@@ -1,4 +1,3 @@
-cat > README.md << 'EOF'
 # 🚀 Star Wars API - Fullstack
 
 Sistema fullstack desenvolvido com **Node.js, Express, MongoDB Atlas e React**, permitindo gerenciamento completo (CRUD) dos dados do universo Star Wars com **interface administrativa integrada**.
